@@ -1,13 +1,43 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+  background-color: #27262bff;
+}
+
+:root {
+  overflow-x: hidden;
+  background-color: #0E0E0Eff;
+  color: white;
+  /* CSS HEX */
+  --night: #0E0E0Eff;
+  --brown: #943f19ff;
+  --raisin-black: #24252aff;
+  --yale-blue: #1e396eff;
+  --raw-umber: #8f5d45ff;
+  --raisin-black-2: #27262bff;
+  --RED800: #77060b;
+  --RED500: #d90a14;
+  --ORANGENORMAL: #cd4e17;
+  --ORANGEHOVER: #b9461570;
+  --RED100: #f3b3b6;
+  --RED200: #ee8e93;
+  --Orange: #cd4e17;
+  --RED600: #c50912;
+  --RED50: #0d0606;
+
+  /* CSS HSL */
+  --brown: hsla(19, 71%, 34%, 1);
+  --raisin-black: hsla(230, 8%, 15%, 1);
+  --yale-blue: hsla(220, 57%, 27%, 1);
+  --raw-umber: hsla(19, 35%, 42%, 1);
+  --raisin-black-2: hsla(252, 6%, 16%, 1);
 }

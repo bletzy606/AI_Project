@@ -1,0 +1,296 @@
+.workout-planner-section {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--night);
+  color: white;
+  font-family: "Inter", sans-serif;
+}
+
+.content-left {
+  flex: 1;
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 600px;
+}
+
+.media-right {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--raisin-black-2), var(--night));
+}
+
+.demo-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.demo-fallback {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--ORANGENORMAL), var(--RED800));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+}
+
+h1 {
+  font-size: 2.8rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.gradient-text {
+  background: linear-gradient(to right, var(--RED600), var(--ORANGENORMAL));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.input-group {
+  margin-bottom: 2.5rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.goal-select {
+  width: 100%;
+  padding: 1rem;
+  background: var(--raisin-black);
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+}
+
+.features-list {
+  margin-bottom: 3rem;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.feature-icon {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+  background: var(--yale-blue);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.generate-plan-btn {
+  background: linear-gradient(to right, var(--RED600), var(--ORANGENORMAL));
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.generate-plan-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(205, 78, 23, 0.4);
+}
+
+
+.spinner {
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 2px solid white;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  margin-right: 10px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .workout-planner-section {
+    flex-direction: column;
+  }
+
+  .content-left {
+    padding: 2rem;
+    max-width: 100%;
+  }
+
+  .media-right {
+    min-height: 400px;
+  }
+}
+.page-container {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+.section {
+  min-height: 100vh;
+  padding: 5rem 2rem 2rem;
+  scroll-margin-top: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.section-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--raisin-black-2);
+  border-radius: 12px;
+  border: 1px solid var(--yale-blue);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  will-change: transform; /* Optimize for animations */
+}
+
+/* Animation classes */
+.motion-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.motion-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Image container styles */
+.media-right {
+  position: relative;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-back-container,
+.image-main-container {
+  position: absolute;
+}
+
+.image-back {
+  width: 110%;
+  height: auto;
+  filter: blur(10px);
+  opacity: 0.7;
+  z-index: 1;
+}
+
+.main-image {
+  width: 100%;
+  height: auto;
+  z-index: 2;
+  position: relative;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Floating animation */
+.image-main-container {
+  animation: float 6s ease-in-out infinite;
+}
+
+.image-back-container {
+  animation: floatBack 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes floatBack {
+  0% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(20px) translateX(20px);
+  }
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .media-right {
+    width: 100%;
+    margin-top: 2rem;
+  }
+
+  .image-back {
+    width: 90%;
+  }
+}
+.feature-icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.bg-custom-orange {
+  background-color: #b9461570; /* Your orange palette */
+}
+
+.bg-custom-purple {
+  background-color: #943f19ff; /* Example purple */
+}
+
+.bg-custom-teal {
+  background-color: #77060b; /* Example teal */
+}

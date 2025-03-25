@@ -1,0 +1,88 @@
+
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    position: relative;
+    padding: 0 50px;
+    
+  }
+  
+  .navbar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, 
+      transparent, 
+      var(--Orange), 
+      transparent
+    );
+  }
+  
+  .navbar-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--ORANGENORMAL), var(--RED800));
+  }
+  
+  .logo-text {
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  
+  .navbar-center {
+    display: flex;
+    gap: 30px;
+  }
+  
+  .navbar-center a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+  }
+  
+  .navbar-center a:hover {
+    color: var(--ORANGENORMAL);
+  }
+  
+  .create-mvp-btn {
+    background: linear-gradient(to right, var(--ORANGENORMAL), var(--RED800));
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  }
+  
+  .create-mvp-btn:hover {
+    opacity: 0.9;
+    background: linear-gradient(to right, var(--RED500), var(--RED800));
+  }
+  
+  body {
+    background-color: var(--night);
+    margin: 0;
+    color: white;
+  }
+
+  
