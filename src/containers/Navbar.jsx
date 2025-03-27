@@ -1,17 +1,26 @@
 import React, { useContext } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import { ScrollContext } from "../context/ScrollContext";
 
 const Navbar = () => {
   const { scrollTo, plansRef, workoutRef, compRef } = useContext(ScrollContext);
+  const navigate = useNavigate();
 
   const handleNavClick = (e, ref) => {
     e.preventDefault();
-    scrollTo(ref);
+
+    // Navigate to home first if not already there
+    if (window.location.pathname !== "/") {
+      navigate("/");
+      // Wait for the home page to load before scrolling
+      setTimeout(() => scrollTo(ref), 100);
+    } else {
+      scrollTo(ref);
+    }
   };
 
-    return (
+  return (
     <>
       <nav className="navbar">
         <div className="navbar-left">
@@ -25,11 +34,9 @@ const Navbar = () => {
           <a href="#plansRef" onClick={(e) => handleNavClick(e, plansRef)}>
             Workout Planner
           </a>
-
           <a href="#workoutRef" onClick={(e) => handleNavClick(e, workoutRef)}>
             Progress Tracker
           </a>
-
           <a href="#compRef" onClick={(e) => handleNavClick(e, compRef)}>
             Comparaison
           </a>
@@ -48,8 +55,7 @@ const Navbar = () => {
       <main>
         <Outlet />
       </main>
-            </>
-            
+    </>
   );
 };
 

@@ -349,7 +349,7 @@ const WeeklyPlanner = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <h1 className="weekly-planner__title">Weekly Workout Plan</h1>
+      <h1 className="weekly-planner__title">Weekly Workout Breakdown</h1>
       
       <div className="weekly-planner__days">
         {Object.keys(workouts).map((day) => (
