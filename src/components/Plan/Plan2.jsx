@@ -78,9 +78,9 @@ const Plan2= forwardRef((props, ref) => {
   
 
 
-  // Get dates for current week (Sunday to Saturday)
+ 
   const getCurrentWeekDates = () => {
-    const dayOfWeek = currentDate.getDay(); // 0 (Sunday) to 6 (Saturday)
+    const dayOfWeek = currentDate.getDay(); 
     const sunday = new Date(currentDate);
     sunday.setDate(currentDate.getDate() - dayOfWeek);
     
@@ -108,7 +108,6 @@ const Plan2= forwardRef((props, ref) => {
     "8:00 PM",
   ];
 
-  // Complete schedule data for all 7 days
   const scheduleData = {
     Sunday: {
       "8:00 AM": ["Restorative Yoga 8:00 AM · Emily Thompson"],
@@ -167,7 +166,6 @@ const Plan2= forwardRef((props, ref) => {
         },
       ],
     },
-    // Add similar details for all other workouts...
   };
 
   const handleDayClick = (day) => {

@@ -1,5 +1,7 @@
+
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useRef } from 'react'; // Added useRef import
 import Home from './pages/Home';
 import Navbar from './containers/Navbar';
 import Footer from './components/Footer/Footer';
@@ -9,6 +11,8 @@ import UserProfile from './pages/UserProfile';
 import Dashboard from './pages/Dashboard'; 
 
 function App() {
+  const workoutRef = useRef(null); // Added workoutRef definition
+
   return (
     <BrowserRouter>
       <ScrollProvider>
@@ -17,33 +21,13 @@ function App() {
             <Route index element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<UserProfile />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard ref={workoutRef} />} />
           </Route>
         </Routes>
         <Footer />
-      </ScrollProvider >
+      </ScrollProvider>
     </BrowserRouter>
   )
 }
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
 
 export default App;

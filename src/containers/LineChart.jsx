@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, forwardRef } from 'react';
 import { ResponsiveLine } from "@nivo/line";
 import { motion } from 'framer-motion';
-import { ScrollContext } from '../context/ScrollContext'; // Adjust the import path as needed
+import { ScrollContext } from '../context/ScrollContext';
 
-const LineChart = () => {
-  const { chartRef } = useContext(ScrollContext);
+const LineChart = forwardRef((props, ref) => {
+  const { chartRef: contextChartRef } = useContext(ScrollContext);
   const [isVisible, setIsVisible] = useState(false);
 
   // Workout progress data
@@ -74,20 +74,20 @@ const LineChart = () => {
       { threshold: 0.1 }
     );
 
-    if (chartRef.current) {
-      observer.observe(chartRef.current);
+    if (ref.current) {
+      observer.observe(ref.current);
     }
 
     return () => {
-      if (chartRef.current) {
-        observer.unobserve(chartRef.current);
+      if (ref.current) {
+        observer.unobserve(ref.current);
       }
     };
-  }, [chartRef]);
+  }, [ref]);
 
   return (
-    <motion.div 
-      ref={chartRef}
+    <motion.div
+      ref={ref}
       initial={{ opacity: 0, scale: 0.9 }}
       animate={isVisible ? {
         opacity: 1,
@@ -114,29 +114,12 @@ const LineChart = () => {
         colors={(d) => d.color}
         theme={{
           axis: {
-            ticks: {
-              text: {
-                fill: 'white'
-              }
-            },
-            legend: {
-              text: {
-                fill: 'white'
-              }
-            }
+            ticks: { text: { fill: 'white' } },
+            legend: { text: { fill: 'white' } }
           },
-          grid: {
-            line: {
-              stroke: 'rgba(255,255,255,0.1)'
-            }
-          },
+          grid: { line: { stroke: 'rgba(255,255,255,0.1)' } },
           tooltip: {
-            container: {
-              background: 'transparent',
-              color: 'white',
-              boxShadow: 'none',
-              border: 'none'
-            }
+            container: { background: 'transparent', color: 'white', boxShadow: 'none', border: 'none' }
           }
         }}
         curve="linear"
@@ -169,25 +152,9 @@ const LineChart = () => {
         motionStiffness={120}
         motionDamping={15}
         tooltip={({ point }) => (
-          <div 
-            style={{ 
-              color: 'white', 
-              background: 'transparent', 
-              display: 'flex', 
-              alignItems: 'center' 
-            }}
-          >
-            <div 
-              style={{ 
-                width: '12px', 
-                height: '12px', 
-                backgroundColor: point.serieColor, 
-                marginRight: '8px' 
-              }} 
-            />
-            <div>
-              {point.serieId}: {point.data.yFormatted}
-            </div>
+          <div style={{ color: 'white', background: 'transparent', display: 'flex', alignItems: 'center' }}>
+            <div style={{ width: '12px', height: '12px', backgroundColor: point.serieColor, marginRight: '8px' }} />
+            <div>{point.serieId}: {point.data.yFormatted}</div>
           </div>
         )}
         lineComponent={({ line, lineGenerator }) => (
@@ -195,12 +162,7 @@ const LineChart = () => {
             initial={{ pathLength: 0 }}
             animate={isVisible ? { 
               pathLength: 1,
-              transition: { 
-                duration: 1.5,
-                type: "spring",
-                stiffness: 100,
-                delay: line.index * 0.2 
-              }
+              transition: { duration: 1.5, type: "spring", stiffness: 100, delay: line.index * 0.2 } 
             } : { pathLength: 0 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -214,13 +176,8 @@ const LineChart = () => {
           <motion.g
             initial={{ scale: 0, opacity: 0 }}
             animate={isVisible ? { 
-              scale: 1, 
-              opacity: 1,
-              transition: { 
-                type: "spring",
-                stiffness: 300,
-                delay: point.index * 0.1 
-              }
+              scale: 1, opacity: 1,
+              transition: { type: "spring", stiffness: 300, delay: point.index * 0.1 } 
             } : { scale: 0, opacity: 0 }}
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
@@ -235,35 +192,30 @@ const LineChart = () => {
             />
           </motion.g>
         )}
-        legends={[
-          {
-            anchor: "bottom-right",
-            direction: "column",
-            justify: false,
-            translateX: 100,
-            translateY: 0,
-            itemsSpacing: 0,
-            itemDirection: "left-to-right",
-            itemWidth: 80,
-            itemHeight: 20,
-            itemOpacity: 0.75,
-            symbolSize: 12,
-            symbolShape: "circle",
-            symbolBorderColor: "rgba(255,255,255,0.5)",
-            effects: [
-              {
-                on: "hover",
-                style: {
-                  itemBackground: "rgba(255,255,255,0.03)",
-                  itemOpacity: 1,
-                },
-              },
-            ],
-          },
-        ]}
+        legends={[{
+          anchor: "bottom-right",
+          direction: "column",
+          justify: false,
+          translateX: 100,
+          translateY: 0,
+          itemsSpacing: 0,
+          itemDirection: "left-to-right",
+          itemWidth: 80,
+          itemHeight: 20,
+          itemOpacity: 0.75,
+          symbolSize: 12,
+          symbolShape: "circle",
+          symbolBorderColor: "rgba(255,255,255,0.5)",
+          effects: [{
+            on: "hover",
+            style: { itemBackground: "rgba(255,255,255,0.03)", itemOpacity: 1 }
+          }]
+        }]}
       />
     </motion.div>
   );
-};
+});
+
+LineChart.displayName = 'LineChart';
 
 export default LineChart;

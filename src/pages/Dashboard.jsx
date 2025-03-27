@@ -1,10 +1,9 @@
 import React, { forwardRef, useEffect, useState, useContext } from 'react';
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { motion } from 'framer-motion';
 import { ScrollContext } from "../context/ScrollContext";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
-import LocalDrinkIcon from "@mui/icons-material/LocalDrink";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import LineChart from "../containers/LineChart";
 import WorkoutTypeBarChart from "../containers/WorkoutTypeBarChart";
@@ -12,6 +11,11 @@ import StatBox from "../containers/StatBox";
 
 const Dashboard = forwardRef((props, ref) => {
     const { chartRef } = useContext(ScrollContext);
+    const theme = useTheme();
+    
+    // Responsive breakpoints
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+    const isMediumScreen = useMediaQuery(theme.breakpoints.between('md', 'lg'));
     
     // Intersection Observer setup
     const [isVisible, setIsVisible] = useState(false);
@@ -38,24 +42,31 @@ const Dashboard = forwardRef((props, ref) => {
         };
     }, [ref]);
 
+    // Responsive padding and layout
+    const getResponsivePadding = () => {
+        if (isSmallScreen) return '1rem';
+        if (isMediumScreen) return '2rem';
+        return '4rem';
+    };
+
     return (
         <Box
             ref={ref}
             sx={{
                 background: '#24252aff',
                 minHeight: '100vh',
-                width: '100%',
+                width: '90%',
                 margin: '0 auto',
-                padding: '4rem',
-                border: '0px solid var(--night)', 
+                padding: getResponsivePadding(),
                 borderRadius: '25px'
             }}
         >
             {/* Dashboard Header */}
             <Box
                 display="flex"
+                flexDirection={isSmallScreen ? 'column' : 'row'}
                 justifyContent="space-between"
-                alignItems="center"
+                alignItems={isSmallScreen ? 'start' : 'center'}
                 mb={3}
             >
                 <motion.div
@@ -71,7 +82,7 @@ const Dashboard = forwardRef((props, ref) => {
                     } : {}}
                 >
                     <Typography
-                        variant="h4"
+                        variant={isSmallScreen ? "h5" : "h4"}
                         fontWeight="bold"
                         sx={{
                             background: 'white',
@@ -92,7 +103,7 @@ const Dashboard = forwardRef((props, ref) => {
                         }}
                     />
                     <Typography
-                        variant="h5"
+                        variant={isSmallScreen ? "h6" : "h5"}
                         color="rgba(255,255,255,0.7)"
                     >
                         Welcome to Your Dashboard
@@ -103,85 +114,71 @@ const Dashboard = forwardRef((props, ref) => {
             {/* STAT BOXES */}
             <Box
                 display="flex"
+                flexDirection={isSmallScreen ? 'column' : 'row'}
                 gap="20px"
                 mb="20px"
             >
-                <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={isVisible ? {
-                        opacity: 1,
-                        y: 0,
-                        transition: {
-                            duration: 0.5,
-                            delay: 0.2,
-                            type: "spring",
-                            stiffness: 120
-                        }
-                    } : {}}
-                    style={{ flex: 1 }}
-                >
-                    <StatBox
-                        icon={<AccessTimeIcon />}
-                        iconColor="activeTime"
-                        title="Active Time"
-                        mainValue="45 min"
-                        subValue="Goal: 60 min"
-                        color="var(--color)"
-                    />
-                </motion.div>
-                <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={isVisible ? {
-                        opacity: 1,
-                        y: 0,
-                        transition: {
-                            duration: 0.5,
-                            delay: 0.4,
-                            type: "spring",
-                            stiffness: 120
-                        }
-                    } : {}}
-                    style={{ flex: 1 }}
-                >
-                    <StatBox
-                        icon={<LocalFireDepartmentIcon />}
-                        iconColor="caloriesBurned"
-                        title="Calories Burned"
-                        mainValue="520 kcal"
-                        subValue="Remaining: 480 kcal"
-                        color="var(--color)"
-                    />
-                </motion.div>
-                <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={isVisible ? {
-                        opacity: 1,
-                        y: 0,
-                        transition: {
-                            duration: 0.5,
-                            delay: 0.6,
-                            type: "spring",
-                            stiffness: 120
-                        }
-                    } : {}}
-                    style={{ flex: 1 }}
-                >
-                    <StatBox
-                        icon={<CalendarTodayIcon />}
-                        iconColor="waterIntake"
-                        title="Workouts/Week"
-                        mainValue="4 done"
-                        subValue="3 remaining"
-                        color="var(--color)"
-                    />
-                </motion.div>
+                {[
+                    { 
+                        icon: <AccessTimeIcon />, 
+                        iconColor: "activeTime", 
+                        title: "Active Time", 
+                        mainValue: "45 min", 
+                        subValue: "Goal: 60 min" 
+                    },
+                    { 
+                        icon: <LocalFireDepartmentIcon />, 
+                        iconColor: "caloriesBurned", 
+                        title: "Calories Burned", 
+                        mainValue: "520 kcal", 
+                        subValue: "Remaining: 480 kcal" 
+                    },
+                    { 
+                        icon: <CalendarTodayIcon />, 
+                        iconColor: "waterIntake", 
+                        title: "Workouts/Week", 
+                        mainValue: "4 done", 
+                        subValue: "3 remaining" 
+                    }
+                ].map((stat, index) => (
+                    <motion.div
+                        key={stat.title}
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={isVisible ? {
+                            opacity: 1,
+                            y: 0,
+                            transition: {
+                                duration: 0.5,
+                                delay: 0.2 * (index + 1),
+                                type: "spring",
+                                stiffness: 120
+                            }
+                        } : {}}
+                        style={{ flex: 1, width: '100%' }}
+                    >
+                        <StatBox
+                            icon={stat.icon}
+                            iconColor={stat.iconColor}
+                            title={stat.title}
+                            mainValue={stat.mainValue}
+                            subValue={stat.subValue}
+                            color="var(--color)"
+                        />
+                    </motion.div>
+                ))}
             </Box>
 
             {/* CHARTS ROW */}
             <Box
                 display="grid"
-                gridTemplateColumns="repeat(12, 1fr)"
-                gridAutoRows="550px"
+                gridTemplateColumns={
+                    isSmallScreen 
+                        ? "1fr" 
+                        : isMediumScreen 
+                            ? "repeat(12, 1fr)" 
+                            : "repeat(12, 1fr)"
+                }
+                gridAutoRows={isSmallScreen ? "auto" : "550px"}
                 gap="20px"
             >
                 {/* Line Chart */}
@@ -203,7 +200,11 @@ const Dashboard = forwardRef((props, ref) => {
                     }}
                     whileTap={{ scale: 0.98 }}
                     style={{
-                        gridColumn: 'span 8',
+                        gridColumn: isSmallScreen 
+                            ? 'span 1' 
+                            : isMediumScreen 
+                                ? 'span 12' 
+                                : 'span 8',
                         backgroundColor: 'var(--color)',
                         borderRadius: '8px',
                         padding: '43px'
@@ -248,7 +249,11 @@ const Dashboard = forwardRef((props, ref) => {
                     }}
                     whileTap={{ scale: 0.98 }}
                     style={{
-                        gridColumn: 'span 4',
+                        gridColumn: isSmallScreen 
+                            ? 'span 1' 
+                            : isMediumScreen 
+                                ? 'span 12' 
+                                : 'span 4',
                         backgroundColor: 'var(--color)',
                         borderRadius: '8px',
                         padding: '43px'
