@@ -6,6 +6,7 @@ import Footer from './components/Footer/Footer';
 import { ScrollProvider } from './context/ScrollContext';
 import Login from './pages/login';
 import UserProfile from './pages/UserProfile';
+import Dashboard from './pages/Dashboard'; 
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<UserProfile />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Route>
         </Routes>
         <Footer />
