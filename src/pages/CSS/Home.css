@@ -1,6 +1,7 @@
 .workout-planner-section {
   display: flex;
-  min-height: 100vh;
+ flex-direction: row;
+ justify-content: center;
   background-color: var(--night);
   color: white;
   font-family: "Inter", sans-serif;
@@ -8,38 +9,29 @@
 
 .content-left {
   flex: 1;
-  padding: 4rem;
+  padding: 4rem 4rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   max-width: 600px;
 }
-
-.media-right {
+.media-right  {
   flex: 1;
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, var(--raisin-black-2), var(--night));
+  padding:2rem;
+  /* display: flex;
+  flex-direction: column; */
+  /* justify-content: center; */
+  max-width: 600px;
+  max-height: 100vh;
 }
 
-.demo-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.demo-fallback {
-  position: absolute;
-  top: 0;
-  left: 0;
+.demo-image {
+  
   width: 100%;
   height: 100%;
   background: linear-gradient(135deg, var(--ORANGENORMAL), var(--RED800));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 1.2rem;
+  
+ 
 }
 
 h1 {
@@ -86,13 +78,13 @@ h1 {
 }
 
 .features-list {
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 
 .feature-item {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
   color: rgba(255, 255, 255, 0.9);
 }
 
@@ -171,7 +163,7 @@ h1 {
 
 .section {
   min-height: 100vh;
-  padding: 5rem 2rem 2rem;
+  padding: 0rem 2rem 2rem;
   scroll-margin-top: 80px;
   display: flex;
   align-items: center;
@@ -294,3 +286,4 @@ h1 {
 .bg-custom-teal {
   background-color: #77060b; /* Example teal */
 }
+

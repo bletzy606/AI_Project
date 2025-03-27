@@ -8,6 +8,7 @@ export const ScrollProvider = ({ children }) => {
   const plansRef = useRef(null);
   const workoutRef = useRef(null);
   const compRef = useRef(null);
+  const chartRef = useRef(null); // Added chartRef
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -29,7 +30,15 @@ export const ScrollProvider = ({ children }) => {
   };
 
   return (
-    <ScrollContext.Provider value={{ plansRef, workoutRef, compRef, scrollTo }}>
+    <ScrollContext.Provider 
+      value={{ 
+        plansRef, 
+        workoutRef, 
+        compRef, 
+        chartRef, // Added to the context value
+        scrollTo 
+      }}
+    >
       {children}
     </ScrollContext.Provider>
   );

@@ -1,0 +1,246 @@
+/* WorkoutCompletedModal.css */
+.workout-completed-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(14, 14, 14, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+  }
+  
+  .workout-completed-modal-content {
+    background-color: var(--nigt);
+    border-radius: 24px;
+    padding: 40px 30px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(210, 10, 20, 0.3);
+    border: 1px solid var(--RED500);
+    overflow: hidden;
+  }
+  
+  .confetti-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .confetti {
+    position: absolute;
+    border-radius: 2px;
+    z-index: 1;
+  }
+  
+  .workout-completed-trophy {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 25px;
+    background: var(--raisin-black-2);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(210, 10, 20, 0.3);
+    position: relative;
+    z-index: 2;
+    border: 3px solid var(--RED500);
+  }
+  
+  .workout-completed-trophy svg {
+    width: 60px;
+    height: 60px;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+  }
+  
+  .workout-completed-title {
+    color: white;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .title-glow {
+    background: linear-gradient(to right, var(--Orange), var(--RED500));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px rgba(205, 78, 23, 0.3);
+  }
+  
+  .workout-completed-subtitle {
+    /* color: var(--RED100); */
+    font-size: 18px;
+    margin-bottom: 25px;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .animated-dots {
+    display: inline-block;
+    width: 20px;
+    text-align: left;
+  }
+  
+  .animated-dots::after {
+    content: '...';
+    animation: dotAnimation 1.5s infinite;
+  }
+  
+  @keyframes dotAnimation {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+  }
+  
+  .workout-completed-details {
+    background-color: var(--raisin-black-2);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    z-index: 2;
+    border: 1px solid var(--RED800);
+  }
+  
+  .progress-ring {
+    position: relative;
+    flex-shrink: 0;
+  }
+  
+  .progress-ring-circle {
+    transition: stroke-dashoffset 0.5s ease;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }
+  
+  .progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  
+  .workout-info {
+    text-align: left;
+    flex-grow: 1;
+  }
+  
+  .completed-label {
+    color: var(--RED100);
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
+  
+  .workout-completed-details h3 {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  
+  .motivation-text {
+    color: var(--Orange);
+    font-size: 14px;
+    font-style: italic;
+  }
+  
+  .workout-completed-button {
+    background: linear-gradient(to right, var(--Orange), var(--RED500));
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 5px 15px rgba(210, 10, 20, 0.3);
+  }
+  
+  .workout-completed-button svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .workout-completed-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(210, 10, 20, 0.4);
+  }
+  
+  .workout-completed-button:active {
+    transform: translateY(0);
+  }
+  
+  .social-sharing {
+    margin-top: 25px;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .social-sharing p {
+    color: white;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .social-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  
+  .social-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .social-icon.instagram {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    color: white;
+  }
+  
+  .social-icon.twitter {
+    background: #1DA1F2;
+    color: white;
+  }
+  
+  .social-icon:hover {
+    transform: scale(1.1);
+  }

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { forwardRef, useEffect, useState, useContext } from 'react';
 import { Box, Typography } from "@mui/material";
 import { motion } from 'framer-motion';
+import { ScrollContext } from "../context/ScrollContext";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import LocalDrinkIcon from "@mui/icons-material/LocalDrink";
@@ -9,15 +10,44 @@ import LineChart from "../containers/LineChart";
 import WorkoutTypeBarChart from "../containers/WorkoutTypeBarChart";
 import StatBox from "../containers/StatBox";
 
-const Dashboard = () => {
+const Dashboard = forwardRef((props, ref) => {
+    const { chartRef } = useContext(ScrollContext);
+    
+    // Intersection Observer setup
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.unobserve(entry.target);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (ref?.current) {
+            observer.observe(ref?.current);
+        }
+
+        return () => {
+            if (ref?.current) {
+                observer.unobserve(ref?.current);
+            }
+        };
+    }, [ref]);
+
     return (
         <Box
+            ref={ref}
             sx={{
-                background: 'var(--raisin-black-2)',
+                background: '#24252aff',
                 minHeight: '100vh',
-                padding: '40px',
-                margin: '30px',
-                border: '5px solid #27262b',
+                width: '100%',
+                margin: '0 auto',
+                padding: '4rem',
+                border: '0px solid var(--night)', 
                 borderRadius: '25px'
             }}
         >
@@ -30,7 +60,7 @@ const Dashboard = () => {
             >
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}
-                    animate={{
+                    animate={isVisible ? {
                         opacity: 1,
                         x: 0,
                         transition: {
@@ -38,7 +68,7 @@ const Dashboard = () => {
                             type: "spring",
                             stiffness: 120
                         }
-                    }}
+                    } : {}}
                 >
                     <Typography
                         variant="h4"
@@ -78,7 +108,7 @@ const Dashboard = () => {
             >
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
-                    animate={{
+                    animate={isVisible ? {
                         opacity: 1,
                         y: 0,
                         transition: {
@@ -87,7 +117,7 @@ const Dashboard = () => {
                             type: "spring",
                             stiffness: 120
                         }
-                    }}
+                    } : {}}
                     style={{ flex: 1 }}
                 >
                     <StatBox
@@ -101,7 +131,7 @@ const Dashboard = () => {
                 </motion.div>
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
-                    animate={{
+                    animate={isVisible ? {
                         opacity: 1,
                         y: 0,
                         transition: {
@@ -110,7 +140,7 @@ const Dashboard = () => {
                             type: "spring",
                             stiffness: 120
                         }
-                    }}
+                    } : {}}
                     style={{ flex: 1 }}
                 >
                     <StatBox
@@ -124,7 +154,7 @@ const Dashboard = () => {
                 </motion.div>
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
-                    animate={{
+                    animate={isVisible ? {
                         opacity: 1,
                         y: 0,
                         transition: {
@@ -133,7 +163,7 @@ const Dashboard = () => {
                             type: "spring",
                             stiffness: 120
                         }
-                    }}
+                    } : {}}
                     style={{ flex: 1 }}
                 >
                     <StatBox
@@ -157,7 +187,7 @@ const Dashboard = () => {
                 {/* Line Chart */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{
+                    animate={isVisible ? {
                         opacity: 1,
                         scale: 1,
                         transition: {
@@ -166,7 +196,7 @@ const Dashboard = () => {
                             type: "spring",
                             stiffness: 120
                         }
-                    }}
+                    } : {}}
                     whileHover={{ 
                         scale: 1.02,
                         boxShadow: "0 8px 15px rgba(0,0,0,0.2)"
@@ -196,13 +226,13 @@ const Dashboard = () => {
                             mb: '3px'
                         }}
                     />
-                    <LineChart />
+                    <LineChart ref={chartRef} />
                 </motion.div>
 
                 {/* Workout Type Bar Chart */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{
+                    animate={isVisible ? {
                         opacity: 1,
                         scale: 1,
                         transition: {
@@ -211,7 +241,7 @@ const Dashboard = () => {
                             type: "spring",
                             stiffness: 120
                         }
-                    }}
+                    } : {}}
                     whileHover={{ 
                         scale: 1.02,
                         boxShadow: "0 8px 15px rgba(0,0,0,0.2)"
@@ -246,6 +276,6 @@ const Dashboard = () => {
             </Box>
         </Box>
     );
-};
+});
 
 export default Dashboard;

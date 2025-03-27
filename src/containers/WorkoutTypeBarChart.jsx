@@ -1,8 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { ResponsiveBar } from "@nivo/bar";
 import { motion } from 'framer-motion';
 
 const WorkoutTypeBarChart = () => {
+  // Intersection Observer state
+  const [isVisible, setIsVisible] = useState(false);
+  const chartRef = useRef(null);
+
+  // Intersection Observer setup
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (chartRef.current) {
+      observer.observe(chartRef.current);
+    }
+
+    return () => {
+      if (chartRef.current) {
+        observer.unobserve(chartRef.current);
+      }
+    };
+  }, []);
+
   // Workout type distribution data
   const workoutTypeData = [
     { workout: "Cardio", count: 5, color: "var(--RED800)" },
@@ -12,17 +39,16 @@ const WorkoutTypeBarChart = () => {
     { workout: "Swimming", count: 2, color: "var( --raw-umber)" }
   ];
 
-  // Generate a random key to force remount on each page load
-  const animationKey = React.useMemo(() => Math.random().toString(36).substring(7), []);
-
   return (
-    <div style={{ 
-      height: '97%', 
-      width: '100%', 
-      position: 'relative' 
-    }}>
+    <div 
+      ref={chartRef}
+      style={{ 
+        height: '97%', 
+        width: '100%', 
+        position: 'relative' 
+      }}
+    >
       <ResponsiveBar
-        key={animationKey} // Add unique key to force remount
         data={workoutTypeData}
         keys={["count"]}
         indexBy="workout"
@@ -72,19 +98,21 @@ const WorkoutTypeBarChart = () => {
         barComponent={({ bar }) => (
           <motion.g
             initial={{ 
+              opacity: 0,
               scaleY: 0, 
               originY: '100%',
               y: bar.height // Start from bottom of the bar's height
             }}
-            animate={{ 
+            animate={isVisible ? { 
+              opacity: 1,
               scaleY: 1,
               y: 0,
               transition: { 
-                duration: 0.3, // Reduced duration
+                duration: 0.5, 
                 type: "spring",
-                delay: (workoutTypeData.length - bar.index - 1) * 0.1 // Adjusted delay for bottom-to-top, left-to-right
+                delay: bar.index * 0.2 // Stagger delay from bottom to top
               }
-            }}
+            } : {}}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >

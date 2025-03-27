@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ResponsiveLine } from "@nivo/line";
 import { motion } from 'framer-motion';
+import { ScrollContext } from '../context/ScrollContext'; // Adjust the import path as needed
 
 const LineChart = () => {
+  const { chartRef } = useContext(ScrollContext);
+  const [isVisible, setIsVisible] = useState(false);
+
   // Workout progress data
   const workoutData = [
     {
@@ -59,8 +63,43 @@ const LineChart = () => {
     }
   ];
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (chartRef.current) {
+      observer.observe(chartRef.current);
+    }
+
+    return () => {
+      if (chartRef.current) {
+        observer.unobserve(chartRef.current);
+      }
+    };
+  }, [chartRef]);
+
   return (
-    <div style={{ width: '100%', height: '100%', padding: '10px', boxSizing: 'border-box' }}>
+    <motion.div 
+      ref={chartRef}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={isVisible ? {
+        opacity: 1,
+        scale: 1,
+        transition: {
+          duration: 0.5,
+          type: "spring",
+          stiffness: 120
+        }
+      } : {}}
+      style={{ width: '100%', height: '100%', padding: '10px', boxSizing: 'border-box' }}
+    >
       <ResponsiveLine
         data={workoutData}
         margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
@@ -154,7 +193,7 @@ const LineChart = () => {
         lineComponent={({ line, lineGenerator }) => (
           <motion.path
             initial={{ pathLength: 0 }}
-            animate={{ 
+            animate={isVisible ? { 
               pathLength: 1,
               transition: { 
                 duration: 1.5,
@@ -162,7 +201,7 @@ const LineChart = () => {
                 stiffness: 100,
                 delay: line.index * 0.2 
               }
-            }}
+            } : { pathLength: 0 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             d={lineGenerator(line.linePoints)}
@@ -174,7 +213,7 @@ const LineChart = () => {
         pointComponent={({ point }) => (
           <motion.g
             initial={{ scale: 0, opacity: 0 }}
-            animate={{ 
+            animate={isVisible ? { 
               scale: 1, 
               opacity: 1,
               transition: { 
@@ -182,7 +221,7 @@ const LineChart = () => {
                 stiffness: 300,
                 delay: point.index * 0.1 
               }
-            }}
+            } : { scale: 0, opacity: 0 }}
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
           >
@@ -223,7 +262,7 @@ const LineChart = () => {
           },
         ]}
       />
-    </div>
+    </motion.div>
   );
 };
 
