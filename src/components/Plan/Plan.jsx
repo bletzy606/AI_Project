@@ -2,41 +2,10 @@ import React, { useState } from 'react';
 import { Clock, Check, Video } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './Plan.css';
+import WorkoutCompletedModal from '../CompletedWorkout/WorkoutCompletedModal'
 
 // Complete 7-day workout data
 const DEFAULT_WORKOUTS = {
-    Saturday: {
-        workouts: [
-          {
-            id: 'sat-1',
-            time: '8:00 AM',
-            name: 'Weekend Warrior',
-            instructor: 'Mike Johnson',
-            type: 'Outdoor Training',
-            duration: 60,
-            calories: 600,
-            difficulty: 'Advanced',
-            equipment: ['None'],
-            completed: false,
-            videoUrl: '',
-            description: 'High-intensity outdoor circuit training combining cardio and strength.'
-          },
-          {
-            id: 'sat-2',
-            time: '4:00 PM',
-            name: 'Recovery Stretch',
-            instructor: 'Sarah Lee',
-            type: 'Flexibility & Recovery',
-            duration: 45,
-            calories: 150,
-            difficulty: 'Beginner',
-            equipment: ['Yoga Mat'],
-            completed: false,
-            videoUrl: '',
-            description: 'Active recovery session to relax muscles and improve mobility.'
-          }
-        ]
-      },
   Monday: {
     workouts: [
       {
@@ -225,7 +194,38 @@ const DEFAULT_WORKOUTS = {
       }
     ]
   },
-  
+  Saturday: {
+    workouts: [
+      {
+        id: 'sat-1',
+        time: '8:00 AM',
+        name: 'Weekend Warrior',
+        instructor: 'Mike Johnson',
+        type: 'Outdoor Training',
+        duration: 60,
+        calories: 600,
+        difficulty: 'Advanced',
+        equipment: ['None'],
+        completed: false,
+        videoUrl: '',
+        description: 'High-intensity outdoor circuit training combining cardio and strength.'
+      },
+      {
+        id: 'sat-2',
+        time: '4:00 PM',
+        name: 'Recovery Stretch',
+        instructor: 'Sarah Lee',
+        type: 'Flexibility & Recovery',
+        duration: 45,
+        calories: 150,
+        difficulty: 'Beginner',
+        equipment: ['Yoga Mat'],
+        completed: false,
+        videoUrl: '',
+        description: 'Active recovery session to relax muscles and improve mobility.'
+      }
+    ]
+  },
   Sunday: {
     workouts: [
       {
@@ -261,20 +261,28 @@ const DEFAULT_WORKOUTS = {
 };
 
 const WeeklyPlanner = () => {
-  const [workouts, setWorkouts] = useState(DEFAULT_WORKOUTS);
-  const [selectedDay, setSelectedDay] = useState('Monday');
-
-  const toggleWorkoutCompletion = (day, workoutId) => {
-    const updatedWorkouts = {...workouts};
-    const workoutIndex = updatedWorkouts[day].workouts.findIndex(w => w.id === workoutId);
-    
-    if (workoutIndex !== -1) {
-      updatedWorkouts[day].workouts[workoutIndex].completed = 
-        !updatedWorkouts[day].workouts[workoutIndex].completed;
+    const [workouts, setWorkouts] = useState(DEFAULT_WORKOUTS);
+    const [selectedDay, setSelectedDay] = useState('Monday');
+    const [showCompletionModal, setShowCompletionModal] = useState(false);
+    const [completedWorkout, setCompletedWorkout] = useState(null);
+  
+    const toggleWorkoutCompletion = (day, workoutId) => {
+      const updatedWorkouts = {...workouts};
+      const workoutIndex = updatedWorkouts[day].workouts.findIndex(w => w.id === workoutId);
       
-      setWorkouts(updatedWorkouts);
-    }
-  };
+      if (workoutIndex !== -1) {
+        const wasCompleted = updatedWorkouts[day].workouts[workoutIndex].completed;
+        updatedWorkouts[day].workouts[workoutIndex].completed = !wasCompleted;
+        
+        setWorkouts(updatedWorkouts);
+  
+        // Show completion modal only when marking as complete (not when unchecking)
+        if (!wasCompleted) {
+          setCompletedWorkout(updatedWorkouts[day].workouts[workoutIndex]);
+          setShowCompletionModal(true);
+        }
+      }
+    };
 
   const renderWorkoutDetails = (day) => {
     return (
@@ -373,7 +381,12 @@ const WeeklyPlanner = () => {
           </h2>
           {renderWorkoutDetails(selectedDay)}
         </motion.div>
-      )}
+          )}
+          <WorkoutCompletedModal
+        isOpen={showCompletionModal}
+        onClose={() => setShowCompletionModal(false)}
+        workoutName={completedWorkout?.name || ''}
+      />
     </motion.div>
   );
 };

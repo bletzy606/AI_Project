@@ -41,7 +41,7 @@
   .categories-title {
     font-size: 1.2rem;
     margin-bottom: 1.5rem;
-    color: var(--RED600);
+    /* color: var(--RED600); */
     font-weight: 600;
   }
   

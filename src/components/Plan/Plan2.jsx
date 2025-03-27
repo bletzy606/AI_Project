@@ -1,19 +1,42 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState, forwardRef, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "./Plan2.css";
+import WorkoutCompletedModal from '../CompletedWorkout/WorkoutCompletedModal'
+import photo from '../images/01.jpeg'
 
-const Plan = forwardRef((props, ref) => {
+const Plan2= forwardRef((props, ref) => {
   // Get current date information
   const currentDate = new Date();
   const currentMonth = currentDate.toLocaleString('default', { month: 'long' });
-  const currentYear = currentDate.getFullYear();
+    const currentYear = currentDate.getFullYear();
+    const [completedWorkouts, setCompletedWorkouts] = useState({});
+    const [showWorkoutCompletedModal, setShowWorkoutCompletedModal] = useState(false);
+    const [selectedCompletedWorkout, setSelectedCompletedWorkout] = useState(null);
   
-  // Get week number
-  const getWeekNumber = (date) => {
-    const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-    const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
-    return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
-  };
+  // Intersection Observer setup
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, [ref]);
 
   const [selectedDay, setSelectedDay] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -21,11 +44,39 @@ const Plan = forwardRef((props, ref) => {
 
   const toggleActivity = (day, time, activity) => {
     const key = `${day}-${time}-${activity}`;
-    setCheckedActivities((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
-  };
+    
+    const updatedCheckedActivities = {
+        ...checkedActivities,
+        [key]: !checkedActivities[key],
+      };
+      setCheckedActivities(updatedCheckedActivities);
+  
+      // Handle workout completion
+      if (updatedCheckedActivities[key]) {
+        // Workout is being marked as completed
+        setCompletedWorkouts(prev => ({
+          ...prev,
+          [key]: true
+        }));
+        
+        // Show completion modal
+        setSelectedCompletedWorkout(activity);
+        setShowWorkoutCompletedModal(true);
+      } else {
+        // Workout is being unchecked
+        const updatedCompletedWorkouts = {...completedWorkouts};
+        delete updatedCompletedWorkouts[key];
+        setCompletedWorkouts(updatedCompletedWorkouts);
+      }
+    };
+  
+    // Close workout completed modal
+    const closeWorkoutCompletedModal = () => {
+      setShowWorkoutCompletedModal(false);
+      setSelectedCompletedWorkout(null);
+    };
+  
+
 
   // Get dates for current week (Sunday to Saturday)
   const getCurrentWeekDates = () => {
@@ -137,11 +188,11 @@ const Plan = forwardRef((props, ref) => {
 
   return (
     <motion.section 
-      ref={ref} 
+      ref={ref}  // Using the forwarded ref here
       id="plansRef" 
       className="section"
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      animate={isVisible ? { opacity: 1 } : {}}
       transition={{ duration: 0.5 }}
     >
       <div className="planner-container">
@@ -149,8 +200,8 @@ const Plan = forwardRef((props, ref) => {
         <div className="title-container">
           <motion.h1 
             className="personal-title"
-            initial={{ y: -20 }}
-            animate={{ y: 0 }}
+            initial={{ y: -20, opacity: 0 }}
+            animate={isVisible ? { y: 0, opacity: 1 } : {}}
             transition={{ duration: 0.4 }}
           >
             <span className="gradient-text">Your Personal Workout Planner</span>
@@ -159,25 +210,17 @@ const Plan = forwardRef((props, ref) => {
 
         <motion.h1 
           className="month-header2"
-          initial={{ y: -20 }}
-          animate={{ y: 0 }}
+          initial={{ y: -20, opacity: 0 }}
+          animate={isVisible ? { y: 0, opacity: 1 } : {}}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
           {currentMonth} {currentYear}
         </motion.h1>
-        {/* <motion.h2 
-          className="week-header"
-          initial={{ y: -20 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-        >
-          Week {getWeekNumber(currentDate)}
-        </motion.h2> */}
 
         <motion.div 
           className="categories-section"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={isVisible ? { opacity: 1 } : {}}
           transition={{ duration: 0.4, delay: 0.3 }}
         >
           <h3 className="categories-title">All Categories</h3>
@@ -195,7 +238,7 @@ const Plan = forwardRef((props, ref) => {
                 className="category-card"
                 style={{ background: category.gradient }}
                 initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
+                animate={isVisible ? { scale: 1, opacity: 1 } : {}}
                 transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
                 whileHover={{ scale: 1.05 }}
               >
@@ -214,6 +257,9 @@ const Plan = forwardRef((props, ref) => {
                 key={day.name}
                 className={`day-header ${selectedDay === day.name ? "active" : ""}`}
                 onClick={() => handleDayClick(day.name)}
+                initial={{ y: 20, opacity: 0 }}
+                animate={isVisible ? { y: 0, opacity: 1 } : {}}
+                transition={{ duration: 0.3 }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -224,16 +270,17 @@ const Plan = forwardRef((props, ref) => {
           </div>
 
           <div className="schedule-grid">
-            {timeSlots.map((time) => (
+            {timeSlots.map((time, timeIndex) => (
               <React.Fragment key={time}>
                 <motion.div 
                   className="time-slot"
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  animate={isVisible ? { opacity: 1 } : {}}
+                  transition={{ delay: timeIndex * 0.05 }}
                 >
                   <div className="time-text">{time}</div>
                 </motion.div>
-                {days.map((day) => (
+                {days.map((day, dayIndex) => (
                   <motion.div
                     key={`${day.name}-${time}`}
                     className={`schedule-cell ${
@@ -243,15 +290,21 @@ const Plan = forwardRef((props, ref) => {
                       scheduleData[day.name]?.[time] &&
                       handleWorkoutClick(e, day.name)
                     }
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={isVisible ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ 
+                      delay: 0.1 + (timeIndex * days.length + dayIndex) * 0.01,
+                      type: "spring", 
+                      stiffness: 300 
+                    }}
                     whileHover={{ scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 300 }}
                   >
                     {scheduleData[day.name]?.[time]?.map((activity) => (
                       <motion.div 
                         key={activity} 
                         className="activity"
                         initial={{ scale: 0.9 }}
-                        animate={{ scale: 1 }}
+                        animate={isVisible ? { scale: 1 } : {}}
                         transition={{ type: "spring" }}
                       >
                         <div className="activity-content">
@@ -293,6 +346,7 @@ const Plan = forwardRef((props, ref) => {
                   className="close-modal" 
                   onClick={closeModal}
                   whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                 >
                   &times;
                 </motion.button>
@@ -354,19 +408,21 @@ const Plan = forwardRef((props, ref) => {
                                   {details.description}
                                 </p>
 
-                                {details.video && (
-                                  <div className="workout-media">
+                                <div className="workout-media">
+                                  {details.image && (
+                                    <div className="media-item">
+                                      <img src={details.image} alt={activity} className="workout-image" />
+                                    </div>
+                                  )}
+                                  {details.video && (
                                     <div className="media-item">
                                       <video controls className="workout-video">
-                                        <source
-                                          src={details.video}
-                                          type="video/mp4"
-                                        />
+                                        <source src={details.video} type="video/mp4" />
                                       </video>
                                     </div>
-                                  </div>
-                                )}
-
+                                  )}
+                                </div>
+                                
                                 {details.exercises.length > 0 && (
                                   <div className="exercises-section">
                                     <h5>Exercises</h5>
@@ -388,6 +444,16 @@ const Plan = forwardRef((props, ref) => {
                                           <p className="exercise-description">
                                             {exercise.description}
                                           </p>
+                                          <div className="exercise-media">
+                                            {exercise.image && (
+                                              <img src={exercise.image} alt={exercise.name} className="exercise-image" />
+                                            )}
+                                            {exercise.video && (
+                                              <video controls className="exercise-video">
+                                                <source src={exercise.video} type="video/mp4" />
+                                              </video>
+                                            )}
+                                          </div>
                                         </motion.div>
                                       ))}
                                     </div>
@@ -405,9 +471,14 @@ const Plan = forwardRef((props, ref) => {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+          </div>
+          <WorkoutCompletedModal 
+        isOpen={showWorkoutCompletedModal}
+        onClose={closeWorkoutCompletedModal}
+        workoutName={selectedCompletedWorkout}
+      />
     </motion.section>
   );
 });
 
-export default Plan;
+export default Plan2;

@@ -34,7 +34,7 @@ const itemVariants = {
 };
 
 const Home = () => {
-  const { plansRef, scrollTo } = useContext(ScrollContext);
+  const { plansRef, scrollTo,workoutRef } = useContext(ScrollContext);
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const handleOpenForm = () => {
@@ -172,7 +172,7 @@ const Home = () => {
     >
       <WorkoutPlannerSection  />
       <Plan2 ref={plansRef} />
-      <Plan  />
+      <Plan />
     </motion.main>
   );
 };
