@@ -1,0 +1,573 @@
+.section {
+    background-color: var(--night);
+    color: white;
+    padding: 2rem;
+    font-family: "Inter", sans-serif;
+    min-height: 100vh;
+  }
+  
+  .planner-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    
+  }
+  
+  
+  .month-header {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(
+      to right,
+      white,
+      white 15%,
+      var(--RED600) 25%,
+      var(--ORANGENORMAL) 85%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .week-header {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .categories-section {
+    margin-bottom: 3rem;
+  }
+  
+  .categories-title {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    color: var(--RED600);
+    font-weight: 600;
+  }
+  
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  
+  .category-card {
+    padding: 1.2rem 1rem;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+    cursor: pointer;
+  }
+  
+  .category-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .schedule-container {
+    display: grid;
+    grid-template-columns: 100px repeat(5, 1fr);
+    gap: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  .time-zone {
+    grid-column: 1;
+    background: linear-gradient(145deg, var(--RED800), var(--ORANGENORMAL));
+    padding: 1rem;
+    text-align: center;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .days-header {
+    grid-column: 2 / span 5;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  }
+  
+  .day-header {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .day-header:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .day-header.active {
+    background: linear-gradient(145deg, var(--ORANGENORMAL), var(--RED800));
+  }
+  
+  .day-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  
+  .day-date {
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+  
+  .schedule-grid {
+    grid-column: 1 / span 6;
+    display: grid;
+    grid-template-columns: 100px repeat(5, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+  }
+  
+  .time-slot {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .time-text {
+    transform: rotate(-90deg);
+    white-space: nowrap;
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+  
+  .schedule-cell {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 100px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .schedule-cell.has-activity {
+    background: rgba(255, 255, 255, 0.07);
+  }
+  
+  .schedule-cell.has-activity:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+  
+  .activity {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+    border-left: 4px solid var(--ORANGENORMAL);
+    transition: all 0.3s ease;
+  }
+  
+  .activity:hover {
+    transform: translateX(3px);
+  }
+  
+  .activity-content {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  
+  .special-activity {
+    color: var(--ORANGENORMAL);
+    font-weight: 600;
+  }
+  
+  /* Modal Styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+  }
+  
+  .modal-content {
+    background: linear-gradient(145deg, #1e1e1e, #171717);
+    border-radius: 15px;
+    width: 90%;
+    max-width: 1000px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    position: relative;
+  }
+  
+  .close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  
+  .close-modal:hover {
+    color: var(--ORANGENORMAL);
+  }
+  
+  .modal-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--ORANGENORMAL);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+  }
+  
+  .time-group {
+    margin-bottom: 2rem;
+  }
+  
+  .time-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .time-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: var(--RED100);
+    min-width: 120px;
+  }
+  
+  .time-line {
+    flex-grow: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--ORANGENORMAL), rgba(255, 255, 255, 0.1));
+    margin-left: 1rem;
+  }
+  
+  .workout-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .workout-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .workout-header h4 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: white;
+    flex-grow: 1;
+  }
+  
+  .workout-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .calories-badge {
+    background: var(--RED800);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  
+  .duration-badge {
+    background: var(--yale-blue);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  
+  .activity-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--ORANGENORMAL);
+  }
+  
+  .workout-details {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .workout-description {
+    margin: 0 0 1.5rem 0;
+    line-height: 1.6;
+  }
+  
+  .workout-media {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .media-item {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .workout-image {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .workout-video {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .exercises-section {
+    margin-top: 2rem;
+  }
+  
+  .exercises-section h5 {
+    font-size: 1.1rem;
+    color: var(--RED100);
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+  }
+  
+  .exercises-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .exercise-card {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 1.2rem;
+    border-left: 3px solid var(--ORANGENORMAL);
+  }
+  
+  .exercise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+  }
+  
+  .exercise-header h6 {
+    margin: 0;
+    font-size: 1rem;
+    color: white;
+  }
+  
+  .exercise-sets {
+    font-size: 0.8rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+  }
+  
+  .exercise-description {
+    margin: 0 0 1rem 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .exercise-media {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .exercise-image {
+    width: 100%;
+    max-width: 150px;
+    border-radius: 6px;
+  }
+  
+  .exercise-video {
+    width: 100%;
+    max-width: 200px;
+    border-radius: 6px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .schedule-container {
+      grid-template-columns: 60px repeat(5, 1fr);
+    }
+    
+    .time-zone {
+      font-size: 0.8rem;
+      padding: 0.5rem;
+    }
+    
+    .day-header {
+      padding: 0.5rem;
+    }
+    
+    .day-name {
+      font-size: 0.9rem;
+    }
+    
+    .day-date {
+      font-size: 0.8rem;
+    }
+    
+    .schedule-grid {
+      grid-template-columns: 60px repeat(5, 1fr);
+    }
+    
+    .activity-content {
+      font-size: 0.7rem;
+    }
+    
+    .modal-content {
+      width: 95%;
+      padding: 1rem;
+    }
+  }
+  .section {
+  background-color: var(--night);
+  color: white;
+  padding: 2rem;
+  font-family: "Inter", sans-serif;
+  min-height: 100vh;
+}
+
+.planner-container {
+  max-width: 1400px; /* Increased from 1200px */
+  margin: 0 auto;
+  overflow-x: auto; /* Allows horizontal scrolling if needed */
+}
+
+/* Schedule container adjustments */
+.schedule-container {
+  display: grid;
+  grid-template-columns: 100px repeat(7, 1fr); /* 7 days instead of 5 */
+  gap: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  min-width: 1100px; /* Minimum width to prevent squeezing */
+}
+
+/* Days header adjustments */
+.days-header {
+  grid-column: 2 / span 7; /* Span 7 columns instead of 5 */
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 equal columns */
+}
+
+/* Schedule grid adjustments */
+.schedule-grid {
+  grid-column: 1 / span 8; /* Span 8 columns (time + 7 days) */
+  display: grid;
+  grid-template-columns: 100px repeat(7, 1fr); /* 7 day columns */
+  grid-auto-rows: minmax(80px, auto);
+}
+
+/* Day header adjustments */
+.day-header {
+  padding: 1rem 0.5rem; /* Slightly less horizontal padding */
+  min-width: 120px; /* Minimum width for each day */
+}
+
+/* Time slot adjustments */
+.time-slot {
+  min-height: 80px;
+}
+
+/* Activity cells */
+.schedule-cell {
+  min-height: 80px;
+  min-width: 120px; /* Minimum width to prevent squeezing */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1600px) {
+  .day-header {
+    padding: 1rem 0.3rem;
+  }
+  .activity-content {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 1400px) {
+  .planner-container {
+    padding: 1rem;
+  }
+  .day-name {
+    font-size: 0.95rem;
+  }
+  .day-date {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .schedule-container {
+    grid-template-columns: 80px repeat(7, 1fr);
+  }
+  .schedule-grid {
+    grid-template-columns: 80px repeat(7, 1fr);
+  }
+  .time-zone {
+    font-size: 0.9rem;
+  }
+}
+/* Add to Plan2.css */
+
+.title-container {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .personal-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0;
+  }
+  
+  .gradient-text {
+    background: linear-gradient(135deg, var(--ORANGENORMAL), var(--RED800));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+  }
+  
+  .month-header2 {
+    color: var(--RED100);
+    color: white !important;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  

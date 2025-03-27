@@ -1,0 +1,245 @@
+
+  .weekly-planner {
+    background-color: var(--night);
+    min-height: 100vh;
+    /* padding: 1.5rem; */
+    margin:  auto;
+
+  }
+  
+  .weekly-planner__title {
+    color: white;
+    font-size: 1.875rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Plan.css - Updated for 7-day layout with original margins */
+
+.section {
+    background-color: var(--night);
+    color: white;
+    padding: 2rem;
+    font-family: "Inter", sans-serif;
+    min-height: 100vh;
+  }
+  
+  .planner-container {
+    max-width: 1400px;
+    margin: 0 auto; /* Maintains your original center alignment */
+    padding: 0 1.5rem; /* Matches your original margin/padding */
+  }
+  
+  /* Schedule container adjustments */
+  .schedule-container {
+    display: grid;
+    grid-template-columns: 100px repeat(7, 1fr); /* 7 days */
+    gap: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    margin: 0 auto; /* Maintains your original margins */
+  }
+  
+  /* Days header adjustments */
+  .days-header {
+    grid-column: 2 / span 7;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin: 0; /* Removes any default margins */
+  }
+  
+  /* Schedule grid adjustments */
+  .schedule-grid {
+    grid-column: 1 / span 8;
+    display: grid;
+    grid-template-columns: 100px repeat(7, 1fr);
+    grid-auto-rows: minmax(80px, auto);
+  }
+  
+  /* Day header adjustments */
+  .day-header {
+    padding: 1rem 0.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0; /* Removes default margins */
+  }
+  
+  /* Time slot adjustments */
+  .time-slot {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 0; /* Removes default margins */
+  }
+  
+  /* Activity cells */
+  .schedule-cell {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 80px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin: 0; /* Removes default margins */
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 1600px) {
+    .planner-container {
+      padding: 0 1rem; /* Slightly reduced padding */
+    }
+    .day-header {
+      padding: 1rem 0.3rem;
+    }
+  }
+  
+  @media (max-width: 1400px) {
+    .schedule-container {
+      grid-template-columns: 80px repeat(7, 1fr);
+    }
+    .schedule-grid {
+      grid-template-columns: 80px repeat(7, 1fr);
+    }
+  }
+  
+  @media (max-width: 1200px) {
+    .planner-container {
+      overflow-x: auto;
+      padding: 0 0.5rem;
+    }
+    .schedule-container {
+      min-width: 1100px;
+    }
+  }
+  
+  /* Keep all your original component styles */
+  .weekly-planner {
+    background-color: var(--night);
+    min-height: 100vh;
+    margin: 0 auto; /* Maintains your original center alignment */
+    padding: 1.5rem; /* Your original padding */
+    max-width: 1400px; /* Matches container width */
+  }
+  
+  .weekly-planner__days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* Updated to 7 days */
+    gap: 0.5rem; /* Reduced gap to fit all days */
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Rest of your original CSS remains unchanged */
+  .weekly-planner__title {
+    color: white;
+    font-size: 1.875rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+  
+  .weekly-planner__day-button {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    color: white;
+    transition: background-color 0.3s ease;
+    margin: 0; /* Removes default margins */
+  }
+  
+  /* ... (keep all other existing CSS rules exactly as they were) */
+  .weekly-planner__day-button--active {
+    background-color: var(--ORANGENORMAL);
+  }
+  
+  .weekly-planner__day-button--inactive {
+    background-color: var(--raisin-black-2);
+  }
+  
+  .weekly-planner__day-button--inactive:hover {
+    background-color: var(--brown);
+  }
+  
+  .weekly-planner__workout-container {
+    background-color: var(--raisin-black);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+  }
+  
+  .weekly-planner__workout-title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .weekly-planner__workout-card {
+    background-color: var(--raisin-black-2);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .weekly-planner__workout-time {
+    color: var(--ORANGENORMAL);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+  }
+  
+  .weekly-planner__workout-name {
+    color: white;
+    font-weight: 600;
+  }
+  
+  .weekly-planner__workout-instructor {
+    color: #888;
+  }
+  
+  .weekly-planner__workout-type {
+    color: var(--raw-umber);
+    background-color: var(--raisin-black);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    display: inline-block;
+  }
+  
+  .weekly-planner__workout-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .weekly-planner__video-button {
+    color: var(--yale-blue);
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .weekly-planner__video-button:hover {
+    background-color: rgba(30, 57, 110, 0.2);
+  }
+  
+  .weekly-planner__complete-button {
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+  }
+  
+  .weekly-planner__complete-button--completed {
+    background-color: var(--RED800);
+    color: white;
+  }
+  
+  .weekly-planner__complete-button--pending {
+    border: 1px solid var(--brown);
+    color: var(--brown);
+  }
