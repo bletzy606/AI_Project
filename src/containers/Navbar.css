@@ -6,6 +6,9 @@
     height: 80px;
     position: relative;
     padding: 0 50px;
+    background-color: var(--night);
+    margin: 0;
+    color: white;
     
   }
   
@@ -79,10 +82,4 @@
     background: linear-gradient(to right, var(--RED500), var(--RED800));
   }
   
-  body {
-    background-color: var(--night);
-    margin: 0;
-    color: white;
-  }
-
   
